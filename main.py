@@ -1,7 +1,11 @@
+from random import randint
+
+import ParallelSelectionSort
 from Rifle import Rifle
 from SelectionSort import SelectionSort
 from copy import deepcopy
 from time import time
+from BidirectionalSelectionSort import parallel_sort
 
 
 def test_sort_method(sort_method, len_array, progon_number):
@@ -30,7 +34,7 @@ def test_sort_method(sort_method, len_array, progon_number):
         exec_time.append(end - start)
         if not check_array(arr):
             correctness_flag = False
-        print(f"- {i+1} progon passed -")
+        print(f"- {i + 1} progon passed -")
     print(f"Correctness of sorting: {correctness_flag}")
     avarage_time = sum(exec_time) / progon_number
     print("Average execution time:", avarage_time, "seconds")
@@ -51,7 +55,13 @@ def check_array(array):
 
 
 def main():
-    test_sort_method(SelectionSort.sort, 10000, 5)
+    array = [randint(0, 10) for _ in range(10)]
+    print(array)
+    print(ParallelSelectionSort.sort(array, 5))
+
+
+
+
 
 
 if __name__ == '__main__':
