@@ -1,20 +1,20 @@
-from random import randint
+from typing import Callable
 
-import ParallelSelectionSort
 from Rifle import Rifle
-from SelectionSort import SelectionSort
 from copy import deepcopy
 from time import time
-from BidirectionalSelectionSort import parallel_sort
+import ParallelSelectionSort
+import SelectionSort
 
 
-def test_sort_method(sort_method, len_array, progon_number):
+def test_sort_method(sort_method: Callable, len_array: int, progon_number: int, n_split: int) -> float:
     """
     This method tests sorting algo for correctness and measure its average time
 
     :param sort_method: Sorting method for testing
     :param len_array: Length of test array
     :param progon_number: Number of testing repeating
+    :param n_split: Number of array division
     :return average_time
     """
     array = [Rifle() for i in range(len_array)]
@@ -27,7 +27,7 @@ def test_sort_method(sort_method, len_array, progon_number):
 
         # Start of measuring
         start = time()
-        sort_method(arr)
+        arr = sort_method(arr, n_split)
         # End of measuring
         end = time()
 
@@ -41,7 +41,7 @@ def test_sort_method(sort_method, len_array, progon_number):
     return avarage_time
 
 
-def check_array(array):
+def check_array(array: list[Rifle]) -> bool:
     """
     Method checks if array are in ascending order
 
@@ -55,13 +55,13 @@ def check_array(array):
 
 
 def main():
-    array = [randint(0, 10) for _ in range(10)]
-    print(array)
-    print(ParallelSelectionSort.sort(array, 5))
+    serial_time = test_sort_method(SelectionSort.sort, 15000, 5, 5)
 
+    parallel_time = test_sort_method(ParallelSelectionSort.parallel_sort, 15000, 5, 5)
 
+    speedup = serial_time / parallel_time
 
-
+    print("Speedup for parallel version is -", speedup)
 
 
 if __name__ == '__main__':
