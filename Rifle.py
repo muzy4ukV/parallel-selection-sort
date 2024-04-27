@@ -31,6 +31,14 @@ class Rifle(object):
         else:
             return self._caliber < other._caliber
 
+    def __le__(self, other):
+        if not isinstance(other, Rifle):
+            return False
+        if self._caliber == other._caliber:
+            return (self._bullet_speed * self._barrel_length) <= (other._bullet_speed * other._barrel_length)
+        else:
+            return self._caliber <= other._caliber
+
     def __gt__(self, other):
         if not isinstance(other, Rifle):
             return False

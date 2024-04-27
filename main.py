@@ -1,13 +1,15 @@
+from random import randint
 from typing import Callable
-
+import multiprocessing as mp
 from Rifle import Rifle
 from copy import deepcopy
-from time import time
+from time import time, sleep
 import ParallelSelectionSort
 import SelectionSort
+import BidirectionalSelectionSort
 
 
-def test_sort_method(sort_method: Callable, len_array: int, progon_number: int, n_split: int) -> float:
+def test_sort_method(sort_method: Callable, len_array: int, progon_number: int, n_split=None) -> float:
     """
     This method tests sorting algo for correctness and measure its average time
 
@@ -27,7 +29,10 @@ def test_sort_method(sort_method: Callable, len_array: int, progon_number: int, 
 
         # Start of measuring
         start = time()
-        arr = sort_method(arr, n_split)
+        if n_split:
+            arr = sort_method(arr, n_split)
+        else:
+            arr = sort_method(arr)
         # End of measuring
         end = time()
 
@@ -54,14 +59,34 @@ def check_array(array: list[Rifle]) -> bool:
     return True
 
 
-def main():
-    serial_time = test_sort_method(SelectionSort.sort, 15000, 5, 5)
+def warm_up(len_array: int, progon_number: int):
+    """
+    Function that will warming up the processor before main work
+    :return: None
+    """
+    print("Warming up CPU")
+    array = [Rifle() for i in range(len_array)]
+    for i in range(progon_number):
+        SelectionSort.sort(array, 5)
+        print(f"- {i + 1} progon passed -")
+    print("Warming ended")
 
-    parallel_time = test_sort_method(ParallelSelectionSort.parallel_sort, 15000, 5, 5)
+def f(x):
+    sleep(x)
+
+
+def main():
+    warm_up(10000, 5)
+
+    serial_time = test_sort_method(SelectionSort.sort, 5000, 5, 5)
+
+    parallel_time = test_sort_method(ParallelSelectionSort.parallel_sort, 5000, 5, 5)
 
     speedup = serial_time / parallel_time
 
     print("Speedup for parallel version is -", speedup)
+
+    test_sort_method(BidirectionalSelectionSort.parallel_sort, 5000, 5)
 
 
 if __name__ == '__main__':
