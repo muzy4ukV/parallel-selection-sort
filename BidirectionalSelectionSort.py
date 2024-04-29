@@ -2,7 +2,13 @@ import multiprocessing as mp
 
 
 def find_min_max(arr, start, end):
-    # Find the index of the minimum and maximum values in the array
+    """
+    Find the index of the minimum and maximum values in the array
+    :param arr: input array
+    :param start: start of subarray
+    :param end: end of subarray
+    :return: indexes of min and max
+    """
     min_index = start
     max_index = start
     for i in range(start + 1, end):

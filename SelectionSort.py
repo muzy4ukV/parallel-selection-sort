@@ -1,5 +1,4 @@
 import sys
-
 import numpy as np
 from Merge import merge_arrays
 
@@ -15,11 +14,17 @@ def sort(array, n_split):
 
 
 def selection_iterative_sort(array: list):
+    """
+    Classic iterative version of selection sort
+    :param array: input array for sorting
+    :return: sorted array
+    """
     size = len(array)
     for i in range(size - 1):
         min_index = i
         for j in range(i + 1, size):
             if array[j] < array[min_index]:
                 min_index = j
-        array[i], array[min_index] = array[min_index], array[i]
+        if min_index != i:
+            array[i], array[min_index] = array[min_index], array[i]
     return array

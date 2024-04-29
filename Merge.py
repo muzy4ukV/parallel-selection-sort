@@ -1,5 +1,8 @@
-
 def merge(arr1: list, arr2: list):
+    """
+    :param arr1, arr2: left and right subarray for merging
+    :return: one merged sorted array
+    """
     result = []
     i = j = 0
 
@@ -23,6 +26,10 @@ def merge(arr1: list, arr2: list):
 
 
 def merge_arrays(arrays):
+    """
+    :param arrays: input array of sorted sub_arrays
+    :return: one merged sorted array
+    """
     if len(arrays) == 0:
         return []
     if len(arrays) == 1:
